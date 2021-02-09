@@ -52,8 +52,12 @@ export const styles = StyleSheet.create({
 
   cocktailsContainer: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginTop: 20,
     width: '100%',
+  },
+
+  finalBottomMargin: {
+    marginBottom: 70,
   },
 
   hintTextStyles: {

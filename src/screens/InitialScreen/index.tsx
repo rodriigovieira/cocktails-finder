@@ -1,8 +1,7 @@
 import {faCocktail, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import {Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Text, View, TouchableOpacity} from 'react-native';
 import CustomLinearGradient from '../../components/LinearGradient';
 import {InitialScreenProps} from '../../types';
 import {styles} from './styles';

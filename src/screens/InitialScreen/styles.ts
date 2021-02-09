@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '90%',
 
     // Elevation effect
     shadowColor: '#3f3f3f',

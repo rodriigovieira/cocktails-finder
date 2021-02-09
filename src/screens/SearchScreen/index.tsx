@@ -1,8 +1,15 @@
 import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React, {useEffect, useState} from 'react';
-import {TextInput, Text, View, ActivityIndicator, Alert} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  View,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import CocktailComponent from '../../components/CocktailComponent';
@@ -27,9 +34,9 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
   const shouldShowBackButton = searchText.length === 0;
   const shouldShowCancelButton = searchText.length > 0;
   const shouldShowSearchTextLengthHint =
-    searchText.length < 3 && cocktails.length === 0;
+    searchText.length < 3 && cocktails?.length === 0;
   const shouldShowNoCocktailsMessage =
-    searchText.length >= 3 && cocktails.length === 0 && !loading;
+    searchText.length >= 3 && cocktails?.length === 0 && !loading;
 
   /**
    * Go back to previous page
@@ -56,7 +63,7 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
       .then((res) => {
         dispatch({
           type: UPDATE_COCKTAILS_LIST,
-          payload: res?.drinks,
+          payload: res?.drinks ?? [],
         });
 
         setLoading(false);
@@ -66,11 +73,7 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
         Alert.alert(
           'Error',
           'It was not possible to fetch the drinks. Please check your network connection or try again later.',
-          [
-            {
-              text: 'Close',
-            },
-          ],
+          [{text: 'Close'}],
         );
       });
   }, [searchText, dispatch]);
@@ -124,6 +127,7 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
               <CocktailComponent key={cocktail.idDrink} cocktail={cocktail} />
             );
           })}
+          <View style={styles.finalBottomMargin} />
         </ScrollView>
       </CustomLinearGradient>
     </SafeAreaView>
