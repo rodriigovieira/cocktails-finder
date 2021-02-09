@@ -1,7 +1,7 @@
 import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React, {useEffect, useState} from 'react';
-import {TextInput, Text, View, ActivityIndicator} from 'react-native';
+import {TextInput, Text, View, ActivityIndicator, Alert} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
@@ -61,7 +61,18 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
 
         setLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch(() => {
+        setLoading(false);
+        Alert.alert(
+          'Error',
+          'It was not possible to fetch the drinks. Please check your network connection or try again later.',
+          [
+            {
+              text: 'Close',
+            },
+          ],
+        );
+      });
   }, [searchText, dispatch]);
 
   return (
