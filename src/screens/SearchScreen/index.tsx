@@ -26,7 +26,8 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
   // Variables
   const shouldShowBackButton = searchText.length === 0;
   const shouldShowCancelButton = searchText.length > 0;
-  const shouldShowSearchTextLengthHint = searchText.length < 3;
+  const shouldShowSearchTextLengthHint =
+    searchText.length < 3 && cocktails.length === 0;
   const shouldShowNoCocktailsMessage =
     searchText.length >= 3 && cocktails.length === 0 && !loading;
 
