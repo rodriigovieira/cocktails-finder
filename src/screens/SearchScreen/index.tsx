@@ -4,16 +4,24 @@ import React, {useEffect, useState} from 'react';
 import {TextInput, Text, View, ActivityIndicator} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
 import CocktailComponent from '../../components/CocktailComponent';
 import CustomLinearGradient from '../../components/LinearGradient';
 import {APIBaseURL} from '../../constants';
+import {typedUseSelector} from '../../redux';
+import {
+  CLEAR_COCKTAILS_LIST,
+  UPDATE_COCKTAILS_LIST,
+} from '../../redux/types/CocktailsTypes';
 import {CocktailModel, SearchScreenProps} from '../../types';
 import {styles} from './styles';
 
 const SearchScreen = ({navigation}: SearchScreenProps) => {
-  const [cocktails, setCocktails] = useState<Array<CocktailModel>>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+
+  const {cocktails} = typedUseSelector((state) => state.cocktails);
+  const dispatch = useDispatch();
 
   // Variables
   const shouldShowBackButton = searchText.length === 0;
@@ -33,7 +41,7 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
    * Clears the text and the results
    */
   const cancelSearch = () => {
-    setCocktails([]);
+    dispatch({type: CLEAR_COCKTAILS_LIST});
     setSearchText('');
   };
 
@@ -45,11 +53,15 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
     fetch(`${APIBaseURL}/1/search.php?s=${searchText}`)
       .then((res) => res.json())
       .then((res) => {
-        setCocktails(res?.drinks ?? []);
+        dispatch({
+          type: UPDATE_COCKTAILS_LIST,
+          payload: res?.drinks,
+        });
+
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  }, [searchText]);
+  }, [searchText, dispatch]);
 
   return (
     <SafeAreaView edges={['top']} style={styles.safeAreaContainer}>
