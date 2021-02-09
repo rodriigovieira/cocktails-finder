@@ -36,10 +36,13 @@ Finally, run the project on your desired platform. You could either run `yarn io
 
 This section aims to give a small introduction to the libraries being used in this project, and explain their benefits.
 
-*Typescript*: provides a type-checking system to the project, avoiding runtime-errors and saving lots of hours on debugging.
-*Redux*: provides an easy way to manage the app's state, the side effects of changing it, among many other things. Very useful as the project grows.
-*react-native-linear-gradient*: provides an easy way of creating gradients.
-*fontawesome*: library with several icons. The package facilitate its use, allowing us to resize and style them the way we see fit.
+**Typescript**: provides a type-checking system to the project, avoiding runtime-errors and saving lots of hours on debugging.
+
+**Redux**: provides an easy way to manage the app's state, the side effects of changing it, among many other things. Very useful as the project grows.
+
+**react-native-linear-gradient**: provides an easy way of creating gradients.
+
+**fontawesome**: library with several icons. The package facilitate its use, allowing us to resize and style them the way we see fit.
 
 ### Potential issues
 
