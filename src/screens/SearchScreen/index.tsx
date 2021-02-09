@@ -1,7 +1,13 @@
 import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CocktailComponent from '../../components/CocktailComponent';
@@ -68,15 +74,22 @@ const styles = StyleSheet.create({
   hintTextStyles: {
     fontSize: 18,
     color: 'white',
+    marginHorizontal: 20,
+    textAlign: 'center',
   },
 });
 
 const SearchScreen = ({navigation}: SearchScreenProps) => {
   const [cocktails, setCocktails] = useState<Array<CocktailModel>>([]);
   const [searchText, setSearchText] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // Variables
   const shouldShowBackButton = searchText.length === 0;
   const shouldShowCancelButton = searchText.length > 0;
+  const shouldShowSearchTextLengthHint = searchText.length < 3;
+  const shouldShowNoCocktailsMessage =
+    searchText.length >= 3 && cocktails.length === 0 && !loading;
 
   /**
    * Go back to previous page
@@ -96,10 +109,13 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
   useEffect(() => {
     if (searchText.length < 3) return;
 
+    setLoading(true);
+
     fetch(`${APIBaseURL}/1/search.php?s=${searchText}`)
       .then((res) => res.json())
       .then((res) => {
         setCocktails(res?.drinks ?? []);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, [searchText]);
@@ -134,9 +150,17 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
 
       <CustomLinearGradient style={styles.rootContainer}>
         <ScrollView contentContainerStyle={styles.cocktailsContainer}>
-          {cocktails.length === 0 && (
+          {loading && <ActivityIndicator color="white" size={80} />}
+
+          {shouldShowNoCocktailsMessage && (
             <Text style={styles.hintTextStyles}>
-              Type at least 3 characters to fetch the drinks.
+              There are no cocktails with the name {searchText}.
+            </Text>
+          )}
+
+          {shouldShowSearchTextLengthHint && (
+            <Text style={styles.hintTextStyles}>
+              Type at least three characters to search for drinks.
             </Text>
           )}
 
