@@ -1,6 +1,6 @@
 import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   TextInput,
   ScrollView,
@@ -8,24 +8,20 @@ import {
   Text,
   View,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import CocktailComponent from '../../components/CocktailComponent';
 import CustomLinearGradient from '../../components/LinearGradient';
-import {APIBaseURL} from '../../constants';
 import {typedUseSelector} from '../../redux';
-import {
-  CLEAR_COCKTAILS_LIST,
-  UPDATE_COCKTAILS_LIST,
-} from '../../redux/types/CocktailsTypes';
+import {CLEAR_COCKTAILS_LIST} from '../../redux/types/CocktailsTypes';
 import {CocktailModel, SearchScreenProps} from '../../types';
 import {styles} from './styles';
+import {useFetchCocktails} from './UseFetchCocktails';
 
 const SearchScreen = ({navigation}: SearchScreenProps) => {
   const [searchText, setSearchText] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const loading = useFetchCocktails(searchText);
 
   const {cocktails} = typedUseSelector((state) => state.cocktails);
   const dispatch = useDispatch();
@@ -52,31 +48,6 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
     dispatch({type: CLEAR_COCKTAILS_LIST});
     setSearchText('');
   };
-
-  useEffect(() => {
-    if (searchText.length < 3) return;
-
-    setLoading(true);
-
-    fetch(`${APIBaseURL}/1/search.php?s=${searchText}`)
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch({
-          type: UPDATE_COCKTAILS_LIST,
-          payload: res?.drinks ?? [],
-        });
-
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        Alert.alert(
-          'Error',
-          'It was not possible to fetch the drinks. Please check your network connection or try again later.',
-          [{text: 'Close'}],
-        );
-      });
-  }, [searchText, dispatch]);
 
   return (
     <SafeAreaView edges={['top']} style={styles.safeAreaContainer}>
@@ -127,6 +98,7 @@ const SearchScreen = ({navigation}: SearchScreenProps) => {
               <CocktailComponent key={cocktail.idDrink} cocktail={cocktail} />
             );
           })}
+
           <View style={styles.finalBottomMargin} />
         </ScrollView>
       </CustomLinearGradient>
