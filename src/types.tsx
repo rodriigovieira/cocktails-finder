@@ -29,3 +29,10 @@ export type SearchScreenProps = {
   route: SearchScreenRouteProp;
   navigation: SearchScreenNavigationProp;
 };
+
+// Custom types
+export type CocktailModel = {
+  idDrink: string;
+  strDrink: string;
+  strDrinkThumb: string;
+};
