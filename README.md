@@ -13,13 +13,13 @@ Also, this project is using yarn. If you don't have it, you can install it by ru
 First, clone this project:
 
 ```
-git clone https://github.com/rodriigovieira/cocktail-finder
+git clone https://github.com/rodriigovieira/cocktails-finder
 ```
 
 Then, go to the project's directory:
 
 ```
-cd cocktail-finder
+cd cocktails-finder
 ```
 
 After that, install the project's dependencies using yarn:
